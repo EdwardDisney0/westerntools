@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Western Tools - Скрипт для облегчения вашего игрового процесса.</title>
+    <link rel="icon" href="https://i.ibb.co/8DLTXGqq/image.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #8B4513;
+            --secondary: #D2B48C;
+            --accent: #CD853F;
+            --dark: #1A1A1A;
+            --light: #F5F5DC;
+            --highlight: #FFD700;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: url('https://images.unsplash.com/photo-1519750783826-e2420f4d687f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            color: var(--highlight);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--highlight);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--highlight);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(139, 69, 19, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--highlight);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn-download {
+            background-color: var(--highlight);
+            color: var(--dark);
+            border-color: var(--highlight);
+            padding: 18px 35px;
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-download::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+        
+        .btn-download:hover::before {
+            left: 100%;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 60px 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8));
+            border-radius: 15px;
+            padding: 30px;
+            width: 30%;
+            min-width: 300px;
+            margin: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--accent);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-card i {
+            font-size: 40px;
+            color: var(--highlight);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--highlight);
+        }
+        
+        .feature-card p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .developers {
+            margin: 80px 0;
+            text-align: center;
+        }
+        
+        .developers h2 {
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: var(--highlight);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .developers h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--highlight), transparent);
+            bottom: -10px;
+            left: 25%;
+        }
+        
+        .dev-triangle {
+            position: relative;
+            height: 400px;
+            margin: 0 auto;
+            width: 600px;
+        }
+        
+        .dev-card {
+            position: absolute;
+            width: 200px;
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(40, 40, 40, 0.9));
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--accent);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .dev-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(205, 133, 63, 0.6);
+        }
+        
+        .dev-card.top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+        
+        .dev-card.left {
+            bottom: 50px;
+            left: 50px;
+            z-index: 2;
+        }
+        
+        .dev-card.right {
+            bottom: 50px;
+            right: 50px;
+            z-index: 1;
+        }
+        
+        .dev-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--highlight);
+            margin-bottom: 15px;
+        }
+        
+        .dev-card h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: var(--highlight);
+        }
+        
+        .dev-card p {
+            font-size: 16px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .dev-card .dev-role {
+            font-style: italic;
+            color: var(--accent);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent);
+        }
+        
+        .social-btn i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .social-btn.discord {
+            background-color: #5865F2;
+            border-color: #5865F2;
+        }
+        
+        .social-btn.vk {
+            background-color: #0077FF;
+            border-color: #0077FF;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--accent);
+            color: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .feature-card {
+                width: 100%;
+                margin: 15px 0;
+            }
+            
+            .dev-triangle {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .dev-card {
+                position: static;
+                transform: none;
+                margin: 15px 0;
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="https://i.ibb.co/8DLTXGqq/image.png/50x50" alt="Western Tools Logo">
+                <h1>Western Tools</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="#about">О нас</a>
+                <a href="#features">Возможности</a>
+                <a href="#developers">Разработчики</a>
+                <a href="#download">Скачать</a>
+            </nav>
+        </header>
+        
+        <section class="hero" id="about">
+            <h2>Скрипт для облегчения вашего игрового процесса.</h2>
+            <p>Western Tools — это универсальный скрипт, разработанный специально для сотрудников государственных организаций. Он включает в себя всё необходимое для эффективной, быстрой и комфортной работы внутри фракции.
+Будь вы сотрудником полиции, ФСБ, Минздрава или Правительства — этот инструмент кардинально упростит повседневные задачи.</p>
+            <div>
+                <a href="#download" class="btn btn-download">Скачать сейчас</a>
+                <a href="#features" class="btn">Подробнее</a>
+            </div>
+        </section>
+        
+        <section class="features" id="features">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Высокая производительность</h3>
+                <p>Western Tools разработан с особым вниманием к оптимизации. Мы понимаем, насколько важно, чтобы скрипт не тормозил, не вызывал лагов и не перегружал систему во время напряжённой работы в организации.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Безопасность и надежность</h3>
+                <p>Western Tools — это не просто функциональный и удобный скрипт. Это решение, которому можно доверять. Безопасность и стабильность — один из главных приоритетов при разработке. Администрация Западного округа официально гарантирует</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-cogs"></i>
+                <h3>Гибкая настройка</h3>
+                <p>Western Tools создан не как шаблонный скрипт "для всех", а как многоуровневая система, которую можно адаптировать под нужды именно вашей фракции или команды.
+Будь ты лидером, замом или обычным сотрудником — ты сам выбираешь, как будет работать твой инструмент.</p>
+            </div>
+        </section>
+        
+        <section class="developers" id="developers">
+            <h2>Наша команда разработчиков</h2>
+            <div class="dev-triangle">
+                <div class="dev-card top" onclick="window.location.href='https://t.me/edward_scripts'">
+                    <img src="https://i.ibb.co/cSmJMZZF/image.png/100x100" alt="E.Lorenso">
+                    <h3>E.Lorenso</h3>
+                    <p class="dev-role">Ведущий разработчик</p>
+                    <p>Автор идеи Western Tools с многолетним опытом в разработке программного обеспечения.</p>
+                </div>
+                <div class="dev-card left" onclick="window.location.href='https://vk.com/dima_lihach'">
+                    <img src="https://i.ibb.co/C4LT2S4/image.png/100x100" alt="Lihach">
+                    <h3>Lihach</h3>
+                    <p class="dev-role">Менеджер проекта</p>
+                    <p>Обеспечивает выполнение проекта в срок и соответствие всем требованиям.</p>
+                </div>
+                <div class="dev-card right" onclick="window.location.href='https://t.me/Kalhan4ik'">
+                    <img src="https://i.ibb.co/LX9RBjqc/12312.jpg/100x100" alt="Kalhan">
+                    <h3>Kalhan</h3>
+                    <p class="dev-role">Разработчик</p>
+                    <p>Реализует основную функциональность и поддерживает стандарты качества кода.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="social-links">
+            <a href="https://discord.gg/GHqpvxzz" class="social-btn discord" target="_blank">
+                <i class="fab fa-discord"></i> Discord
+            </a>
+            <a href="https://vk.me/join/KrAU36m/30qDX/U5SfHi6tgu9HVpbSBLB70=" class="social-btn vk" target="_blank">
+                <i class="fab fa-vk"></i> Группа ВК
+            </a>
+        </section>
+        
+        <section id="download" style="text-align: center; margin: 80px 0;">
+            <h2 style="font-size: 36px; margin-bottom: 30px; color: var(--highlight);">Готовы начать?</h2>
+            <a href="https://github.com/EdwardDisney0/western-tools/releases/download/v1.0/Western.Tools.exe" class="btn btn-download" style="font-size: 22px; padding: 20px 40px;">
+                <i class="fas fa-download"></i> Скачать Western Tools
+            </a>
+            <p style="margin-top: 20px; font-size: 16px; color: var(--secondary);">Версия 1-Beta | Последнее обновление: Июнь 2023</p>
+        </section>
+        
+        <footer>
+            <p>&copy; 2023 Western Tools. Все права защищены.</p>
+            <p style="margin-top: 10px;">Контакты: support@westerntools.com</p>
+        </footer>
+    </div>
+</body>
+</html>
