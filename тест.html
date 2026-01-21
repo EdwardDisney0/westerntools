@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Тесты</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container {
+        max-width: 600px;
+        width: 100%;
+    }
+
+    .header {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        color: #667eea;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .progress {
+        background: #e0e0e0;
+        height: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s;
+    }
+
+    .upload-section {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .upload-btn {
+        background: #667eea;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    #fileInput {
+        display: none;
+    }
+
+    .question-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        display: none;
+    }
+
+    .question-text {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .answer-btn {
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.3s;
+    }
+
+    .answer-btn:active {
+        transform: scale(0.98);
+    }
+
+    .answer-btn.correct {
+        background: #4caf50;
+        color: white;
+        border-color: #4caf50;
+    }
+
+    .answer-btn.incorrect {
+        background: #f44336;
+        color: white;
+        border-color: #f44336;
+    }
+
+    .answer-btn:disabled {
+        cursor: not-allowed;
+    }
+
+    .next-btn {
+        width: 100%;
+        padding: 15px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 15px;
+        display: none;
+    }
+
+    .results {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        display: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .score {
+        font-size: 48px;
+        color: #667eea;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+
+    .restart-btn {
+        background: #667eea;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .info-text {
+        color: #666;
+        margin-top: 15px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Тестирование</h1>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p id="questionCounter" style="margin-top: 10px; color: #666;"></p>
+        </div>
+
+```
+    <div class="upload-section" id="uploadSection">
+        <h2>📁 Загрузите файл с вопросами</h2>
+        <p class="info-text">
+            Поддерживаются форматы: .txt, .docx<br><br>
+            <strong>Формат:</strong><br>
+            Вопрос (текст вопроса)<br>
+            Первый вариант - правильный ответ<br>
+            Второй вариант<br>
+            Третий вариант<br>
+            Четвертый вариант<br>
+            (варианты будут перемешаны автоматически)
+        </p>
+        <input type="file" id="fileInput" accept=".txt,.docx">
+        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+            Выбрать файл
+        </button>
+        <p id="loadingText" style="color: #667eea; margin-top: 10px; display: none;">Загрузка...</p>
+    </div>
+
+    <div class="question-card" id="questionCard">
+        <div class="question-text" id="questionText"></div>
+        <div id="answersContainer"></div>
+        <button class="next-btn" id="nextBtn">Следующий вопрос →</button>
+    </div>
+
+    <div class="results" id="results">
+        <h2>🎉 Тест завершен!</h2>
+        <div class="score" id="finalScore"></div>
+        <p id="resultText"></p>
+        <button class="restart-btn" onclick="location.reload()">Пройти заново</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+    // Проверка доступности библиотеки mammoth
+    if (typeof mammoth === 'undefined') {
+        console.error('Mammoth library not loaded');
+    }
+</script>
+<script>
+    let questions = [];
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        document.getElementById('loadingText').style.display = 'block';
+
+        if (file.name.endsWith('.docx')) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                mammoth.extractRawText({arrayBuffer: event.target.result})
+                    .then(result => {
+                        parseQuestions(result.value);
+                        document.getElementById('loadingText').style.display = 'none';
+                    })
+                    .catch(err => {
+                        alert('Ошибка чтения .docx файла');
+                        document.getElementById('loadingText').style.display = 'none';
+                    });
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                parseQuestions(event.target.result);
+                document.getElementById('loadingText').style.display = 'none';
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+    });
+
+    function parseQuestions(text) {
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l && l.length > 1);
+        let i = 0;
+        
+        while (i < lines.length) {
+            const line = lines[i];
+            
+            // Пропускаем заголовки и пустые строки
+            if (line.includes('ИНФОРМАЦИОННАЯ КУЛЬТУРА') || 
+                line === 'Тесты' || 
+                line.length < 5) {
+                i++;
+                continue;
+            }
+            
+            // Начало нового вопроса - длинная строка с текстом вопроса
+            if (line.length > 50 || line.includes('?') || 
+                (i + 4 < lines.length && !lines[i].match(/^[А-Я]\./))) {
+                
+                const question = {
+                    text: line,
+                    answers: [],
+                    correctIndex: 0 // Первый ответ всегда правильный
+                };
+                
+                i++;
+                let answerCount = 0;
+                
+                // Собираем варианты ответов (обычно 4)
+                while (i < lines.length && answerCount < 4) {
+                    let answerLine = lines[i];
+                    
+                    // Убираем префиксы типа "А.", "Д.", "К." и т.д.
+                    answerLine = answerLine.replace(/^[А-Я]\./, '').trim();
+                    
+                    if (answerLine.length > 0 && answerLine.length < 150) {
+                        question.answers.push(answerLine);
+                        answerCount++;
+                    }
+                    i++;
+                }
+                
+                // Добавляем вопрос только если у него есть минимум 2 ответа
+                if (question.answers.length >= 2) {
+                    questions.push(question);
+                }
+            } else {
+                i++;
+            }
+        }
+        
+        if (questions.length > 0) {
+            // Перемешиваем вопросы
+            shuffleArray(questions);
+            
+            document.getElementById('uploadSection').style.display = 'none';
+            showQuestion();
+        } else {
+            alert('Не удалось загрузить вопросы. Проверьте формат файла.');
+        }
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function showQuestion() {
+        answered = false;
+        const q = questions[currentQuestion];
+        
+        // Создаем копию ответов с индексами
+        const answersWithIndex = q.answers.map((ans, idx) => ({
+            text: ans,
+            isCorrect: idx === q.correctIndex
+        }));
+        
+        // Перемешиваем ответы
+        shuffleArray(answersWithIndex);
+        
+        document.getElementById('questionCard').style.display = 'block';
+        document.getElementById('questionText').textContent = q.text;
+        document.getElementById('questionCounter').textContent = 
+            `Вопрос ${currentQuestion + 1} из ${questions.length}`;
+        
+        const progress = ((currentQuestion) / questions.length) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+        
+        const container = document.getElementById('answersContainer');
+        container.innerHTML = '';
+        
+        answersWithIndex.forEach((answer) => {
+            const btn = document.createElement('button');
+            btn.className = 'answer-btn';
+            btn.textContent = answer.text;
+            btn.onclick = () => checkAnswer(answer.isCorrect, btn, answersWithIndex);
+            container.appendChild(btn);
+        });
+        
+        document.getElementById('nextBtn').style.display = 'none';
+    }
+
+    function checkAnswer(isCorrect, clickedBtn, allAnswers) {
+        if (answered) return;
+        answered = true;
+        
+        const buttons = document.querySelectorAll('.answer-btn');
+        
+        buttons.forEach((btn, idx) => {
+            btn.disabled = true;
+            
+            // Подсвечиваем правильный ответ зеленым
+            if (allAnswers[idx].isCorrect) {
+                btn.classList.add('correct');
+            }
+            // Подсвечиваем неправильный выбор красным
+            else if (btn === clickedBtn && !isCorrect) {
+                btn.classList.add('incorrect');
+            }
+        });
+        
+        if (isCorrect) {
+            score++;
+        }
+        
+        document.getElementById('nextBtn').style.display = 'block';
+    }
+
+    document.getElementById('nextBtn').onclick = function() {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    };
+
+    function showResults() {
+        document.getElementById('questionCard').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        
+        const percentage = Math.round((score / questions.length) * 100);
+        document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
+        document.getElementById('resultText').textContent = 
+            `Вы ответили правильно на ${percentage}% вопросов`;
+        
+        document.getElementById('progressBar').style.width = '100%';
+    }
+</script>
+```
+
+</body>
+</html>
